@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="bosh-bootloader, also known as bbl and pronounced “bubble”, is a command line utility for standing up BOSH on your favorite cloud. bbl currently supports AWS, GCP, Microsoft Azure, Openstack and vSphe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="getting started with bbl and BOSH">
+<meta property="og:url" content="https://digitalfloss.dev/2020/03/03/bbl-and-bosh/index.html">
+<meta property="og:site_name" content="digital floss">
+<meta property="og:description" content="bosh-bootloader, also known as bbl and pronounced “bubble”, is a command line utility for standing up BOSH on your favorite cloud. bbl currently supports AWS, GCP, Microsoft Azure, Openstack and vSphe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://digitalfloss.dev/images/lab-overview-bbl.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/host-groups.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/vds-bbl.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/resource-pool-bbl.png">
+<meta property="article:published_time" content="2020-03-04T01:07:36.000Z">
+<meta property="article:modified_time" content="2020-03-05T02:04:45.201Z">
+<meta property="article:author" content="Tyler Stacey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://digitalfloss.dev/images/lab-overview-bbl.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon-32x32-black.png">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/android-icon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-precomposed.png">
+          
+        
+    
+    <!-- title -->
+    <title>getting started with bbl and BOSH</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="http://github.com/subsetsurprise" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&text=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&is_video=false&description=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=getting started with bbl and BOSH&body=Check out this article: https://digitalfloss.dev/2020/03/03/bbl-and-bosh/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&name=getting started with bbl and BOSH&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&t=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#lab-overview"><span class="toc-number">1.</span> <span class="toc-text">lab overview</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#network-architecture"><span class="toc-number">1.0.1.</span> <span class="toc-text">network architecture</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vSphere-architecture-amp-host-configuration"><span class="toc-number">1.0.2.</span> <span class="toc-text">vSphere architecture &amp; host configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vCenter-service-account-requirements"><span class="toc-number">1.0.3.</span> <span class="toc-text">vCenter service account requirements</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-1-get-your-tools-ready"><span class="toc-number">2.</span> <span class="toc-text">step 1: get your tools ready</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-2-setup-a-directory-for-bbl-state"><span class="toc-number">3.</span> <span class="toc-text">step 2: setup a directory for bbl state</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-3-plan-the-BOSH-deployment"><span class="toc-number">4.</span> <span class="toc-text">step 3: plan the BOSH deployment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-4-modify-the-deployment-to-account-for-a-second-availability-zone"><span class="toc-number">5.</span> <span class="toc-text">step 4: modify the deployment to account for a second availability zone</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-5-deploy-the-jumpbox-and-BOSH-director"><span class="toc-number">6.</span> <span class="toc-text">step 5: deploy the jumpbox and BOSH director</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#access-the-jumpbox"><span class="toc-number">7.</span> <span class="toc-text">access the jumpbox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#access-the-BOSH-director"><span class="toc-number">8.</span> <span class="toc-text">access the BOSH director</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fin"><span class="toc-number">9.</span> <span class="toc-text">fin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#references"><span class="toc-number">10.</span> <span class="toc-text">references</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        getting started with bbl and BOSH
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">digital floss</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-03-04T01:07:36.000Z" itemprop="datePublished">03-03-202020</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong>bosh-bootloader</strong>, also known as <strong>bbl</strong> and pronounced <em>“bubble”</em>, is a command line utility for standing up BOSH on your favorite cloud. <strong>bbl</strong> currently supports AWS, GCP, Microsoft Azure, Openstack and vSphere.</p>
+<p>Wait. What’s <strong>BOSH</strong>?</p>
+<p>Lets let the BOSH team explain:</p>
+<blockquote>
+<p>BOSH is a project that unifies release engineering, deployment, and lifecycle management of small and large-scale cloud software. BOSH can provision and deploy software over hundreds of VMs. It also performs monitoring, failure recovery, and software updates with zero-to-minimal downtime.</p>
+</blockquote>
+<p>bbl is probably the fastest way to get a BOSH director up and running. This post is going to cover the start to finish process of getting a BOSH director &amp; jumpbox deployed by <strong>bbl</strong> on vSphere.</p>
+<p>So let’s get to it …</p>
+<h2 id="lab-overview"><a href="#lab-overview" class="headerlink" title="lab overview"></a>lab overview</h2><h4 id="network-architecture"><a href="#network-architecture" class="headerlink" title="network architecture"></a>network architecture</h4><p>The network setup for this lab uses a pfSense VM in a router on a stick configuration, all traffic that passes between subnets is required to pass through the firewall.</p>
+<p>These subnets are what will become part of the cloud config that defines the IaaS configuration to be used for the BOSH director and all deployments. The cloud config allows us to keep IaaS specific configuration out of the deployment manifests so that they can be re-used across any IaaS.</p>
+<p>In addition to routing and firewall capabilities, the pfSense VM also provides DNS, NTP and syslog services for the BOSH director &amp; deployments.</p>
+<p>There are 3 networks that bosh will use to describe the IaaS configuration:</p>
+<ul>
+<li><strong>bosh-infrastructure</strong>: The BOSH Infrastructure subnet will contain the BOSH Director and Jumpbox initially but can also be used for other infrastructure services that BOSH may be used to deploy.<ul>
+<li><strong>Note</strong>: The BOSH Infrastructure subnet requires outbound connectivity to vCenter.</li>
+</ul>
+</li>
+<li><strong>bosh-tooling</strong>: The BOSH Tooling subnet is where I will later place services such as Vault, Concourse and Sonarqube.</li>
+<li><strong>bosh-applications</strong>: The BOSH Applications subnet will be used later for hosting applications deployed by BOSH.</li>
+</ul>
+<p>I’ve chosen to go with /26 subnets here since this is a lab deployment and I won’t need much IP space for the services I intend on hosting. </p>
+<p><img src="/images/lab-overview-bbl.png" alt="bbl Lab Network" title="bbl Lab Network"></p>
+<h4 id="vSphere-architecture-amp-host-configuration"><a href="#vSphere-architecture-amp-host-configuration" class="headerlink" title="vSphere architecture &amp; host configuration"></a>vSphere architecture &amp; host configuration</h4><p>In my lab setup I have 3 x vSphere 6.7u3 hosts in two separate clusters, under one datacenter. The first cluster is a single host that I use for management to host the firewall, vCenter and vSAN Witness Appliance. The second cluster is a 2 node vSAN cluster. The configuration in vCenter looks like this:</p>
+<ul>
+<li>vcsa-01<ul>
+<li>dc-01<ul>
+<li>cluster-01<ul>
+<li>esxi-01-01</li>
+</ul>
+</li>
+<li>cluster-02<ul>
+<li>esxi-01-01</li>
+<li>esxi-02-02</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>cluster-02 has vSAN, DRS, and HA enabled; DRS is set to fully automated. The cluster is then separated in to pseudo availability zones by using host groups that map to the vSAN fault domains (in this case 1 host per host group &amp; 1 host per fault domain):</p>
+<p><img src="/images/host-groups.png" alt="cluster-02 Host Groups" title="cluster-02 Host Groups"></p>
+<p>This allows us to tell BOSH to stripe workloads across availability zones, by doing this we ensure that a host failure won’t affect an entire application if that application is properly scaled.</p>
+<p>If enabled, the BOSH Resurrector will re-schedule VMs after a failure of an availability zone. It’s important to note here that if the BOSH Resurrector is enabled for DR purposes you must have at least double the capacity required in each availability zone so that BOSH can reschedule the workloads.</p>
+<p>To ease management overhead, a vDS is created for the cluster, with distributed port groups that have connectivity to the 3 networks on the firewall, that looks something like this:</p>
+<p><img src="/images/vds-bbl.png" alt="vDS Configuration" title="vDS Configuration"></p>
+<p>As part of deploying BOSH with bbl you must provide a Resource Pool name, on the cluster where you intend to deploy BOSH create a resource pool and take note of the name. You can create a resource pool by right clicking the target cluster in vCenter:</p>
+<p><img src="/images/resource-pool-bbl.png" alt="Resource Pool Creation" title="Resource Pool Configuration"></p>
+<p>Finally, BOSH will require a shared datastore for both persistent and ephemeral disks, because the vSAN datastore provides shared storage across the cluster we will use that.</p>
+<h4 id="vCenter-service-account-requirements"><a href="#vCenter-service-account-requirements" class="headerlink" title="vCenter service account requirements"></a>vCenter service account requirements</h4><p>In order for BOSH to interact with vCenter we need to create a service account in vCenter. Using the default administrator account for vCenter is a bad security practice and makes it harder to determine if actions in vCenter were performed by an actual administrator or by BOSH. Details of permissions that are required for the service account can be found in the <a href="https://github.com/cloudfoundry/bosh-vsphere-cpi-release/blob/master/docs/required_vcenter_privileges.md" target="_blank" rel="noopener">bosh-vsphere-cpi-release docs</a>.</p>
+<h2 id="step-1-get-your-tools-ready"><a href="#step-1-get-your-tools-ready" class="headerlink" title="step 1: get your tools ready"></a>step 1: get your tools ready</h2><p>The first step to getting going here is to load all the pre-requisite tools onto your laptop. The first set of dependencies for BOSH with install instructions can be found here: <a href="https://bosh.io/docs/cli-v2-install/#additional-dependencies" target="_blank" rel="noopener">https://bosh.io/docs/cli-v2-install/#additional-dependencies</a></p>
+<p>The remainder of the tools can then be installed via Homebrew on MacOS and Linux:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew tap cloudfoundry/tap</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install rbenv ruby-build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install bosh-cli</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install bbl</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> brew install terraform</span></span><br></pre></td></tr></table></figure>
+
+<p>Details on how to install Homebrew can be found <a href="https://brew.sh/" target="_blank" rel="noopener">here</a>.</p>
+<h2 id="step-2-setup-a-directory-for-bbl-state"><a href="#step-2-setup-a-directory-for-bbl-state" class="headerlink" title="step 2: setup a directory for bbl state"></a>step 2: setup a directory for bbl state</h2><p>bbl will automatically generate templates, state and configuration files for your BOSH Director deployment. Start by creating a directory for these files:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir bbl-deployment</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> bbl-deployment</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="step-3-plan-the-BOSH-deployment"><a href="#step-3-plan-the-BOSH-deployment" class="headerlink" title="step 3: plan the BOSH deployment"></a>step 3: plan the BOSH deployment</h2><p>To plan the deployment we’ll provide the required environmental details:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bbl plan --iaas vsphere \</span></span><br><span class="line">--vsphere-vcenter-user bosh-director@vsphere.local \</span><br><span class="line">--vsphere-vcenter-password $PASSWORD \</span><br><span class="line">--vsphere-vcenter-ip $VCENTER_IP \</span><br><span class="line">--vsphere-vcenter-dc dc-01 \</span><br><span class="line">--vsphere-vcenter-cluster cluster-02 \</span><br><span class="line">--vsphere-vcenter-rp cluster-02-rp-01 \</span><br><span class="line">--vsphere-network bosh-infrastructure \</span><br><span class="line">--vsphere-vcenter-ds vsanDatastore \</span><br><span class="line">--vsphere-subnet-cidr 192.168.39.0/26 \</span><br><span class="line">--vsphere-vcenter-disks bbl-bosh-disks-01 \</span><br><span class="line">--vsphere-vcenter-templates bbl-bosh-templates-01 \</span><br><span class="line">--vsphere-vcenter-vms bbl-bosh-vms-01</span><br></pre></td></tr></table></figure>
+
+<p><code>bbl plan</code> produces the following directories and files:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">bbl-state.json     cloud-config       create-jumpbox.sh  delete-jumpbox.sh  runtime-config     vars</span><br><span class="line">bosh-deployment    create-director.sh delete-director.sh jumpbox-deployment terraform</span><br></pre></td></tr></table></figure>
+
+<h2 id="step-4-modify-the-deployment-to-account-for-a-second-availability-zone"><a href="#step-4-modify-the-deployment-to-account-for-a-second-availability-zone" class="headerlink" title="step 4: modify the deployment to account for a second availability zone"></a>step 4: modify the deployment to account for a second availability zone</h2><p><strong>bbl</strong> by default is not configured for multi-availability zone support. In order to configure BOSH to use multiple AZs we need to modify the the cloud config ops file. The ops file is found at <code>cloud-config/ops.yml</code>.</p>
+<p>First we will add the required AZs to the configuration:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">replace</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">/azs</span></span><br><span class="line">  <span class="attr">value:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">z1</span></span><br><span class="line">    <span class="attr">cloud_properties:</span></span><br><span class="line">      <span class="attr">datacenters:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">((vcenter_dc))</span></span><br><span class="line">        <span class="attr">clusters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">&#123;((vcenter_cluster)):</span> <span class="string">&#123;host_group:</span> <span class="string">&#123;name:</span> <span class="string">'cluster-02-hg-01'</span><span class="string">,</span> <span class="attr">drs_rule:</span> <span class="string">'separate_vms'</span><span class="string">&#125;&#125;&#125;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">z2</span></span><br><span class="line">    <span class="attr">cloud_properties:</span></span><br><span class="line">      <span class="attr">datacenters:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">((vcenter_dc))</span></span><br><span class="line">        <span class="attr">clusters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">&#123;((vcenter_cluster)):</span> <span class="string">&#123;host_group:</span> <span class="string">&#123;name:</span> <span class="string">'cluster-02-hg-01'</span><span class="string">,</span> <span class="attr">drs_rule:</span> <span class="string">'separate_vms'</span><span class="string">&#125;&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>Next we define the networks:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">type:</span> <span class="string">replace</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">/networks</span></span><br><span class="line">  <span class="attr">value:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">default</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">manual</span></span><br><span class="line">    <span class="attr">subnets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">range:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.0</span><span class="string">/26</span></span><br><span class="line">      <span class="attr">gateway:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.1</span></span><br><span class="line">      <span class="attr">azs:</span> <span class="string">[z1,</span> <span class="string">z2]</span></span><br><span class="line">      <span class="attr">dns:</span> <span class="string">[192.168.39.1]</span></span><br><span class="line">      <span class="attr">reserved:</span> <span class="string">[((jumpbox__internal_ip))]</span></span><br><span class="line">      <span class="attr">cloud_properties:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">bosh-infrastructure</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">bosh-tooling</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">manual</span></span><br><span class="line">    <span class="attr">subnets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">range:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.64</span><span class="string">/26</span></span><br><span class="line">      <span class="attr">gateway:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.65</span></span><br><span class="line">      <span class="attr">azs:</span> <span class="string">[z1,</span> <span class="string">z2]</span></span><br><span class="line">      <span class="attr">dns:</span> <span class="string">[192.168.39.65]</span></span><br><span class="line">      <span class="attr">reserved:</span> <span class="string">[192.168.39.64-192.168.39.73]</span></span><br><span class="line">      <span class="attr">cloud_properties:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">bosh-tooling</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">bosh-applications</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">manual</span></span><br><span class="line">    <span class="attr">subnets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">range:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.128</span><span class="string">/26</span></span><br><span class="line">      <span class="attr">gateway:</span> <span class="number">192.168</span><span class="number">.39</span><span class="number">.129</span></span><br><span class="line">      <span class="attr">azs:</span> <span class="string">[z1,</span> <span class="string">z2]</span></span><br><span class="line">      <span class="attr">dns:</span> <span class="string">[192.168.39.129]</span></span><br><span class="line">      <span class="attr">reserved:</span> <span class="string">[192.168.39.128-192.168.39.134]</span></span><br><span class="line">      <span class="attr">cloud_properties:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">bosh-applications</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note</strong>: under the <code>cloud_properties</code> properties field, the <code>name</code> refers to the vCenter port group created earlier. Be sure to use values for your own networks.</p>
+<h2 id="step-5-deploy-the-jumpbox-and-BOSH-director"><a href="#step-5-deploy-the-jumpbox-and-BOSH-director" class="headerlink" title="step 5: deploy the jumpbox and BOSH director"></a>step 5: deploy the jumpbox and BOSH director</h2><p>Next the jumpbox and BOSH director are deployed with the <code>bbl up</code> command:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bbl up --iaas vsphere \</span></span><br><span class="line">--vsphere-vcenter-user bosh-director@vsphere.local \</span><br><span class="line">--vsphere-vcenter-password $PASSWORD \</span><br><span class="line">--vsphere-vcenter-ip $VCENTER_IP \</span><br><span class="line">--vsphere-vcenter-dc dc-01 \</span><br><span class="line">--vsphere-vcenter-cluster cluster-02 \</span><br><span class="line">--vsphere-vcenter-rp cluster-02-rp-01 \</span><br><span class="line">--vsphere-network bosh-infrastructure \</span><br><span class="line">--vsphere-vcenter-ds vsanDatastore \</span><br><span class="line">--vsphere-subnet-cidr 192.168.39.0/26 \</span><br><span class="line">--vsphere-vcenter-disks bbl-bosh-disks-01 \</span><br><span class="line">--vsphere-vcenter-templates bbl-bosh-templates-01 \</span><br><span class="line">--vsphere-vcenter-vms bbl-bosh-vms-01</span><br></pre></td></tr></table></figure>
+
+<h2 id="access-the-jumpbox"><a href="#access-the-jumpbox" class="headerlink" title="access the jumpbox"></a>access the jumpbox</h2><p>In order to gain access to the jumpbox we need to retrieve the SSH key generated during its deployment:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bosh int ./vars/jumpbox-vars-store.yml --path /jumpbox_ssh/private_key &gt; jumpbox.key &amp;&amp; sudo chmod 600 jumpbox.key</span><br></pre></td></tr></table></figure>
+
+<p>Now we can SSH into the jumpbox using the retrieved key:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i jumpbox.key jumpbox@192.168.253.5</span><br></pre></td></tr></table></figure>
+
+<h2 id="access-the-BOSH-director"><a href="#access-the-BOSH-director" class="headerlink" title="access the BOSH director"></a>access the BOSH director</h2><p>To access the BOSH director from your own machine, load the environment variables from the state:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">eval</span> <span class="string">"<span class="variable">$(bbl print-env)</span>"</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bosh <span class="built_in">log</span>-in</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="fin"><a href="#fin" class="headerlink" title="fin"></a>fin</h2><p>So that’s it, you now have a working BOSH director that you can use to deploy any number of open source BOSH releases or maybe one of your own!</p>
+<p>For a list of popular open source BOSH releases take a look here: <a href="https://bosh.io/releases" target="_blank" rel="noopener">https://bosh.io/releases</a></p>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p><a href="https://bosh.io/" target="_blank" rel="noopener">https://bosh.io/</a><br><a href="https://bosh.io/docs/vsphere-cpi/" target="_blank" rel="noopener">https://bosh.io/docs/vsphere-cpi/</a><br><a href="https://github.com/cloudfoundry/bosh-bootloader" target="_blank" rel="noopener">https://github.com/cloudfoundry/bosh-bootloader</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="http://github.com/subsetsurprise" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#lab-overview"><span class="toc-number">1.</span> <span class="toc-text">lab overview</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#network-architecture"><span class="toc-number">1.0.1.</span> <span class="toc-text">network architecture</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vSphere-architecture-amp-host-configuration"><span class="toc-number">1.0.2.</span> <span class="toc-text">vSphere architecture &amp; host configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vCenter-service-account-requirements"><span class="toc-number">1.0.3.</span> <span class="toc-text">vCenter service account requirements</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-1-get-your-tools-ready"><span class="toc-number">2.</span> <span class="toc-text">step 1: get your tools ready</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-2-setup-a-directory-for-bbl-state"><span class="toc-number">3.</span> <span class="toc-text">step 2: setup a directory for bbl state</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-3-plan-the-BOSH-deployment"><span class="toc-number">4.</span> <span class="toc-text">step 3: plan the BOSH deployment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-4-modify-the-deployment-to-account-for-a-second-availability-zone"><span class="toc-number">5.</span> <span class="toc-text">step 4: modify the deployment to account for a second availability zone</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-5-deploy-the-jumpbox-and-BOSH-director"><span class="toc-number">6.</span> <span class="toc-text">step 5: deploy the jumpbox and BOSH director</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#access-the-jumpbox"><span class="toc-number">7.</span> <span class="toc-text">access the jumpbox</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#access-the-BOSH-director"><span class="toc-number">8.</span> <span class="toc-text">access the BOSH director</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fin"><span class="toc-number">9.</span> <span class="toc-text">fin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#references"><span class="toc-number">10.</span> <span class="toc-text">references</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&text=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&is_video=false&description=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=getting started with bbl and BOSH&body=Check out this article: https://digitalfloss.dev/2020/03/03/bbl-and-bosh/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&title=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&name=getting started with bbl and BOSH&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://digitalfloss.dev/2020/03/03/bbl-and-bosh/&t=getting started with bbl and BOSH" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tyler Stacey
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="http://github.com/subsetsurprise" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

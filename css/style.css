@@ -551,7 +551,7 @@ body {
   }
 }
 .max-width {
-  max-width: 48rem;
+  max-width: 75rem;
 }
 @media (max-width: 480px) {
   .px3 {
@@ -1081,7 +1081,7 @@ article .content h2:before {
   top: -4px;
   left: -1rem;
   color: #2bbc8a;
-  content: "#";
+  content: "# ";
   font-weight: bold;
   font-size: 1.2rem;
 }
