@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="digital floss">
 <meta property="og:description" content="bosh-bootloader, also known as bbl and pronounced “bubble”, is a command line utility for standing up BOSH on your favorite cloud. bbl currently supports AWS, GCP, Microsoft Azure, Openstack and vSphe">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://digitalfloss.dev/images/lab-overview-bbl.png">
-<meta property="og:image" content="https://digitalfloss.dev/images/host-groups.png">
-<meta property="og:image" content="https://digitalfloss.dev/images/vds-bbl.png">
-<meta property="og:image" content="https://digitalfloss.dev/images/resource-pool-bbl.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/bbl-network-diagram.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/bbl-host-groups.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/bbl-vds.png">
+<meta property="og:image" content="https://digitalfloss.dev/images/bbl-resource-pool.png">
 <meta property="article:published_time" content="2020-03-04T01:07:36.000Z">
-<meta property="article:modified_time" content="2020-03-05T02:04:45.201Z">
+<meta property="article:modified_time" content="2020-03-05T02:52:52.805Z">
 <meta property="article:author" content="Tyler Stacey">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://digitalfloss.dev/images/lab-overview-bbl.png">
+<meta name="twitter:image" content="https://digitalfloss.dev/images/bbl-network-diagram.png">
     
     
         
@@ -170,7 +170,7 @@
 <li><strong>bosh-applications</strong>: The BOSH Applications subnet will be used later for hosting applications deployed by BOSH.</li>
 </ul>
 <p>I’ve chosen to go with /26 subnets here since this is a lab deployment and I won’t need much IP space for the services I intend on hosting. </p>
-<p><img src="/images/lab-overview-bbl.png" alt="bbl Lab Network" title="bbl Lab Network"></p>
+<p><img src="/images/bbl-network-diagram.png" alt="bbl Lab Network" title="bbl Lab Network"></p>
 <h4 id="vSphere-architecture-amp-host-configuration"><a href="#vSphere-architecture-amp-host-configuration" class="headerlink" title="vSphere architecture &amp; host configuration"></a>vSphere architecture &amp; host configuration</h4><p>In my lab setup I have 3 x vSphere 6.7u3 hosts in two separate clusters, under one datacenter. The first cluster is a single host that I use for management to host the firewall, vCenter and vSAN Witness Appliance. The second cluster is a 2 node vSAN cluster. The configuration in vCenter looks like this:</p>
 <ul>
 <li>vcsa-01<ul>
@@ -190,13 +190,13 @@
 </li>
 </ul>
 <p>cluster-02 has vSAN, DRS, and HA enabled; DRS is set to fully automated. The cluster is then separated in to pseudo availability zones by using host groups that map to the vSAN fault domains (in this case 1 host per host group &amp; 1 host per fault domain):</p>
-<p><img src="/images/host-groups.png" alt="cluster-02 Host Groups" title="cluster-02 Host Groups"></p>
+<p><img src="/images/bbl-host-groups.png" alt="cluster-02 Host Groups" title="cluster-02 Host Groups"></p>
 <p>This allows us to tell BOSH to stripe workloads across availability zones, by doing this we ensure that a host failure won’t affect an entire application if that application is properly scaled.</p>
 <p>If enabled, the BOSH Resurrector will re-schedule VMs after a failure of an availability zone. It’s important to note here that if the BOSH Resurrector is enabled for DR purposes you must have at least double the capacity required in each availability zone so that BOSH can reschedule the workloads.</p>
 <p>To ease management overhead, a vDS is created for the cluster, with distributed port groups that have connectivity to the 3 networks on the firewall, that looks something like this:</p>
-<p><img src="/images/vds-bbl.png" alt="vDS Configuration" title="vDS Configuration"></p>
+<p><img src="/images/bbl-vds.png" alt="vDS Configuration" title="vDS Configuration"></p>
 <p>As part of deploying BOSH with bbl you must provide a Resource Pool name, on the cluster where you intend to deploy BOSH create a resource pool and take note of the name. You can create a resource pool by right clicking the target cluster in vCenter:</p>
-<p><img src="/images/resource-pool-bbl.png" alt="Resource Pool Creation" title="Resource Pool Configuration"></p>
+<p><img src="/images/bbl-resource-pool.png" alt="Resource Pool Creation" title="Resource Pool Configuration"></p>
 <p>Finally, BOSH will require a shared datastore for both persistent and ephemeral disks, because the vSAN datastore provides shared storage across the cluster we will use that.</p>
 <h4 id="vCenter-service-account-requirements"><a href="#vCenter-service-account-requirements" class="headerlink" title="vCenter service account requirements"></a>vCenter service account requirements</h4><p>In order for BOSH to interact with vCenter we need to create a service account in vCenter. Using the default administrator account for vCenter is a bad security practice and makes it harder to determine if actions in vCenter were performed by an actual administrator or by BOSH. Details of permissions that are required for the service account can be found in the <a href="https://github.com/cloudfoundry/bosh-vsphere-cpi-release/blob/master/docs/required_vcenter_privileges.md" target="_blank" rel="noopener">bosh-vsphere-cpi-release docs</a>.</p>
 <h2 id="step-1-get-your-tools-ready"><a href="#step-1-get-your-tools-ready" class="headerlink" title="step 1: get your tools ready"></a>step 1: get your tools ready</h2><p>The first step to getting going here is to load all the pre-requisite tools onto your laptop. The first set of dependencies for BOSH with install instructions can be found here: <a href="https://bosh.io/docs/cli-v2-install/#additional-dependencies" target="_blank" rel="noopener">https://bosh.io/docs/cli-v2-install/#additional-dependencies</a></p>
